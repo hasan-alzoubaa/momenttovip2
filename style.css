@@ -1608,19 +1608,146 @@ body {
   padding: 40px 30px;
   border-radius: 20px;
   text-align: center;
-  transition: all 0.4s ease;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   border: 2px solid transparent;
+  position: relative;
+  overflow: hidden;
+  animation: testimonial-float 6s ease-in-out infinite;
+}
+
+/* Floating animation for cards */
+@keyframes testimonial-float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/* Golden glow background */
+.testimonial-card::before {
+  content: '';
+  position: absolute;
+  inset: -50%;
+  background: radial-gradient(
+    circle at center,
+    rgba(212, 175, 55, 0.3) 0%,
+    rgba(244, 208, 63, 0.2) 30%,
+    transparent 70%
+  );
+  animation: glow-pulse-testimonial 4s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+
+@keyframes glow-pulse-testimonial {
+  0%, 100% {
+    opacity: 0.5;
+    transform: scale(0.8);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+}
+
+/* Rotating golden ring */
+.testimonial-card::after {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  background: linear-gradient(
+    45deg,
+    transparent 30%,
+    rgba(212, 175, 55, 0.6) 50%,
+    transparent 70%
+  );
+  border-radius: 20px;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  animation: rotate-border 3s linear infinite;
+  pointer-events: none;
+  z-index: -1;
+}
+
+@keyframes rotate-border {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 .testimonial-card:hover {
-  transform: translateY(-10px);
+  transform: translateY(-15px) scale(1.02);
   border-color: var(--gold);
-  box-shadow: 0 15px 40px rgba(212, 175, 55, 0.3);
+  box-shadow: 
+    0 20px 60px rgba(212, 175, 55, 0.5),
+    0 0 80px rgba(212, 175, 55, 0.3),
+    inset 0 0 30px rgba(212, 175, 55, 0.1);
+  animation: testimonial-float 6s ease-in-out infinite, testimonial-glow 2s ease-in-out infinite;
+}
+
+@keyframes testimonial-glow {
+  0%, 100% {
+    box-shadow: 
+      0 20px 60px rgba(212, 175, 55, 0.5),
+      0 0 80px rgba(212, 175, 55, 0.3),
+      inset 0 0 30px rgba(212, 175, 55, 0.1);
+  }
+  50% {
+    box-shadow: 
+      0 25px 80px rgba(212, 175, 55, 0.7),
+      0 0 120px rgba(212, 175, 55, 0.5),
+      inset 0 0 50px rgba(212, 175, 55, 0.2);
+  }
+}
+
+.testimonial-card:hover::after {
+  opacity: 1;
+}
+
+.testimonial-card:hover::before {
+  animation: glow-pulse-testimonial 2s ease-in-out infinite;
 }
 
 .stars {
   font-size: 1.5rem;
   margin-bottom: 20px;
+  position: relative;
+  z-index: 1;
+  animation: stars-twinkle 3s ease-in-out infinite;
+  filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.6));
+}
+
+@keyframes stars-twinkle {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.1);
+  }
+}
+
+.testimonial-card:hover .stars {
+  animation: stars-twinkle 1.5s ease-in-out infinite, stars-rotate 0.6s ease-in-out;
+  filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.9));
+}
+
+@keyframes stars-rotate {
+  0% {
+    transform: rotate(0deg) scale(1);
+  }
+  50% {
+    transform: rotate(10deg) scale(1.15);
+  }
+  100% {
+    transform: rotate(0deg) scale(1.1);
+  }
 }
 
 .testimonial-text {
@@ -1629,12 +1756,80 @@ body {
   line-height: 1.8;
   margin-bottom: 20px;
   font-style: italic;
+  position: relative;
+  z-index: 1;
+  transition: all 0.4s ease;
+}
+
+.testimonial-card:hover .testimonial-text {
+  color: var(--white);
+  text-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+  transform: scale(1.02);
 }
 
 .testimonial-author {
   font-size: 1rem;
   color: var(--gold-light);
   font-weight: 600;
+  position: relative;
+  z-index: 1;
+  transition: all 0.4s ease;
+  text-shadow: 0 0 5px rgba(212, 175, 55, 0.5);
+}
+
+.testimonial-card:hover .testimonial-author {
+  color: var(--gold);
+  text-shadow: 0 0 15px rgba(212, 175, 55, 0.8);
+  transform: scale(1.05);
+}
+
+/* Shimmer effect for testimonial cards */
+.testimonial-card {
+  background-clip: padding-box;
+}
+
+.testimonial-card .shimmer {
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    45deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.1) 50%,
+    transparent 70%
+  );
+  transform: rotate(45deg);
+  animation: shimmer-testimonial 3s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 1;
+}
+
+@keyframes shimmer-testimonial {
+  0% {
+    transform: translateX(-100%) translateY(-100%) rotate(45deg);
+  }
+  100% {
+    transform: translateX(100%) translateY(100%) rotate(45deg);
+  }
+}
+
+.testimonial-card:hover .shimmer {
+  animation: shimmer-testimonial 1.5s ease-in-out infinite;
+}
+
+/* Staggered animation delay for cards */
+.testimonial-card:nth-child(1) {
+  animation-delay: 0s;
+}
+
+.testimonial-card:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.testimonial-card:nth-child(3) {
+  animation-delay: 0.4s;
 }
 
 /* FAQ Section */
@@ -2605,6 +2800,23 @@ html {
   .feature-card:hover,
   .pricing-card:hover {
     box-shadow: 0 10px 30px rgba(212, 175, 55, 0.3);
+  }
+  
+  /* Simplify testimonial animations on mobile */
+  .testimonial-card {
+    animation: testimonial-float 8s ease-in-out infinite;
+  }
+  
+  .testimonial-card::before {
+    animation: glow-pulse-testimonial 6s ease-in-out infinite;
+  }
+  
+  .testimonial-card .shimmer {
+    animation: shimmer-testimonial 4s ease-in-out infinite;
+  }
+  
+  .stars {
+    animation: stars-twinkle 4s ease-in-out infinite;
   }
 }
 
