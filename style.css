@@ -828,6 +828,13 @@ body {
     font-size: 2rem;
   }
   
+  /* Fix category title layout on tablets */
+  .category-title {
+    font-size: 1.6rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
   /* Better button sizing */
   .btn {
     padding: 14px 30px;
@@ -836,6 +843,11 @@ body {
   
   .hero-buttons {
     gap: 15px;
+  }
+  
+  /* Single column for detailed services on mobile */
+  .detailed-grid {
+    grid-template-columns: 1fr;
   }
 }
 
@@ -2697,10 +2709,26 @@ body {
   
   .category-title {
     font-size: 1.4rem;
+    flex-direction: column;
+    text-align: center;
+    gap: 15px;
   }
   
   .category-list li {
     font-size: 0.9rem;
+  }
+  
+  /* Fix detailed services grid on mobile */
+  .detailed-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  /* Optimize category icon size on mobile */
+  .category-icon {
+    width: 70px;
+    height: 70px;
+    font-size: 2rem;
   }
 }
 
