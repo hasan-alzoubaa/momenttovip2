@@ -23,10 +23,11 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Active menu item on scroll
+  // Active menu item on scroll with throttling for performance
   const sections = document.querySelectorAll('section[id]');
+  let ticking = false;
   
-  window.addEventListener('scroll', () => {
+  function updateOnScroll() {
     const scrollY = window.pageYOffset;
     
     // Header scroll effect
@@ -51,6 +52,15 @@ document.addEventListener('DOMContentLoaded', () => {
         });
       }
     });
+    
+    ticking = false;
+  }
+  
+  window.addEventListener('scroll', () => {
+    if (!ticking) {
+      window.requestAnimationFrame(updateOnScroll);
+      ticking = true;
+    }
   });
 
   // FAQ Accordion
@@ -88,10 +98,10 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Add scroll animation
+  // Add scroll animation with performance optimization
   const observerOptions = {
     threshold: 0.1,
-    rootMargin: '0px 0px -100px 0px'
+    rootMargin: '0px 0px -50px 0px'
   };
 
   const observer = new IntersectionObserver((entries) => {
@@ -99,6 +109,8 @@ document.addEventListener('DOMContentLoaded', () => {
       if (entry.isIntersecting) {
         entry.target.style.opacity = '1';
         entry.target.style.transform = 'translateY(0)';
+        // Unobserve after animation to improve performance
+        observer.unobserve(entry.target);
       }
     });
   }, observerOptions);
@@ -123,12 +135,32 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  // Logo click - scroll to top
+  const logo = document.querySelector('.logo');
+  if (logo) {
+    logo.addEventListener('click', function(e) {
+      e.preventDefault();
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+      // Close mobile menu if open
+      if (mobileMenuToggle && navMenu.classList.contains('active')) {
+        mobileMenuToggle.classList.remove('active');
+        navMenu.classList.remove('active');
+      }
+    });
+  }
+
   // Create animated floating tools in hero
   createFloatingTools();
 });
 
-// Create floating animated tools
+// Create floating animated tools (disabled on mobile for performance)
 function createFloatingTools() {
+  // Skip on mobile devices for better performance
+  if (window.innerWidth < 768) return;
+  
   const hero = document.querySelector('.hero');
   if (!hero) return;
 
@@ -145,16 +177,12 @@ function createFloatingTools() {
     overflow: hidden;
   `;
 
-  // Create multiple floating tool elements
+  // Reduced number of tools for better performance
   const tools = [
     { icon: '🔧', size: 40, duration: 25, delay: 0 },
     { icon: '⚙️', size: 35, duration: 30, delay: 5 },
-    { icon: '🔩', size: 30, duration: 28, delay: 10 },
     { icon: '🛠️', size: 38, duration: 32, delay: 3 },
-    { icon: '⚡', size: 32, duration: 26, delay: 8 },
-    { icon: '🔨', size: 36, duration: 29, delay: 12 },
-    { icon: '🪛', size: 34, duration: 27, delay: 6 },
-    { icon: '⚙️', size: 42, duration: 31, delay: 15 }
+    { icon: '⚡', size: 32, duration: 26, delay: 8 }
   ];
 
   tools.forEach((tool, index) => {
@@ -174,6 +202,7 @@ function createFloatingTools() {
       animation: float-tool-${index} ${tool.duration}s ease-in-out infinite;
       animation-delay: ${tool.delay}s;
       filter: blur(0.5px);
+      will-change: transform;
     `;
 
     // Create unique animation for each tool

@@ -48,6 +48,10 @@ npm run preview
 | [BUILD-INFO.md](./BUILD-INFO.md) | 📦 معلومات البناء |
 | [PROJECT-SUMMARY.md](./PROJECT-SUMMARY.md) | 📋 ملخص المشروع |
 | [LINKS.md](./LINKS.md) | 🔗 روابط مهمة |
+| [PERFORMANCE-REPORT.md](./PERFORMANCE-REPORT.md) | ⚡ تقرير الأداء |
+| [TESTING-CHECKLIST.md](./TESTING-CHECKLIST.md) | ✅ قائمة الاختبار |
+| [QUICK-TEST-GUIDE.md](./QUICK-TEST-GUIDE.md) | 🧪 دليل الاختبار السريع |
+| [OPTIMIZATION-SUMMARY.md](./OPTIMIZATION-SUMMARY.md) | 🎯 ملخص التحسينات |
 
 ---
 
